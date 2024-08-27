@@ -38,7 +38,7 @@ export function PiedDePage() {
           </p>
           <p className="flex items-center justify-center md:justify-end mb-2">
             <PhoneIcon className="mr-2 text-[#24345a]" />
-            +213 779 41 11 84
+            +213 659 962 441
           </p>
           <p className="flex items-center justify-center md:justify-end">
             <EmailIcon className="mr-2 text-[#24345a]" />
