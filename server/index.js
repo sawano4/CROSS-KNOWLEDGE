@@ -21,10 +21,10 @@ if (!fs.existsSync(uploadDir)) {
 // Multer configuration for file upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadDir); // Save files to 'public/uploads' directory
+    cb(null, uploadDir); 
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname); // Use timestamp to avoid file name conflicts
+    cb(null, Date.now() + "-" + file.originalname); 
   },
 });
 
