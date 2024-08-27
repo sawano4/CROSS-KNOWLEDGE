@@ -1,0 +1,19 @@
+{
+	"geolocation": {
+		"data": {
+			"city": "Algiers",
+			"country": {
+				"code": "DZ",
+				"name": "Algeria"
+			},
+			"subdivision": {
+				"code": "16",
+				"name": "Algiers"
+			},
+			"timezone": "Africa/Algiers",
+			"latitude": 36.7405,
+			"longitude": 3.1159
+		},
+		"timestamp": 1724269885261
+	}
+}
