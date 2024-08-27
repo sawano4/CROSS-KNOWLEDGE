@@ -43,7 +43,7 @@ function Inscription() {
     formData.append("passport", passport);
 
     try {
-      const response = await fetch("http://localhost:5000/submit", {
+      const response = await fetch("https://cross-knowledge-1.onrender.com/submit", {
         method: "POST",
         body: formData,
       });
