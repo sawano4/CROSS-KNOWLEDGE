@@ -3,6 +3,7 @@ const express = require("express");
 const multer = require("multer");
 const nodemailer = require("nodemailer");
 const path = require("path");
+const fs = require("fs");
 const cors = require("cors"); // Import CORS
 
 const app = express();
@@ -11,24 +12,29 @@ const PORT = process.env.PORT || 5000;
 // Enable CORS
 app.use(cors()); 
 
+// Create upload directory if it doesn't exist
+const uploadDir = path.join(__dirname, 'public', 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 // Multer configuration for file upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/uploads/"); 
+    cb(null, uploadDir); // Save files to 'public/uploads' directory
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname); 
+    cb(null, Date.now() + "-" + file.originalname); // Use timestamp to avoid file name conflicts
   },
 });
 
 const upload = multer({ storage });
 
 // Serve static files
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Middleware to parse form data
 app.use(express.urlencoded({ extended: true }));
-
 
 // Nodemailer transporter configuration
 const transporter = nodemailer.createTransport({
@@ -39,8 +45,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Routes
-
 // Form submission route
 app.post("/submit", upload.single("passport"), (req, res) => {
   const { firstName, lastName, email, dob, parent1Phone, parent2Phone, program, schoolLevel, subjects } = req.body;
@@ -49,7 +53,7 @@ app.post("/submit", upload.single("passport"), (req, res) => {
   // Email content
   const mailOptions = {
     from: email,
-    to: process.env.EMAIL_USER, 
+    to: process.env.EMAIL_USER,
     subject: "Nouvelle Inscription Reçue",
     html: `<!DOCTYPE html>
 <html lang="fr">
@@ -89,12 +93,12 @@ app.post("/submit", upload.single("passport"), (req, res) => {
         .content p {
             margin: 0;
             padding: 10px 0;
-            font-size: 1.2em; 
-            font-weight: bold; 
+            font-size: 1.2em;
+            font-weight: bold;
         }
         .content p strong {
             font-weight: bold;
-            font-size: 1.2em; /* Increased font size */
+            font-size: 1.2em;
         }
         .footer {
             text-align: center;
@@ -129,8 +133,7 @@ app.post("/submit", upload.single("passport"), (req, res) => {
     </div>
 </body>
 </html>
-
-          `,
+    `,
     attachments: passportFile
       ? [
           {
@@ -148,9 +151,7 @@ app.post("/submit", upload.single("passport"), (req, res) => {
       res.status(500).send("An error occurred while sending the email.");
     } else {
       console.log("Email sent:", info.response);
-      res.send(
-        "Form submitted successfully! Check your email for the details."
-      );
+      res.send("Form submitted successfully! Check your email for the details.");
     }
   });
 });
