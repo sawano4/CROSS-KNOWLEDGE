@@ -46,7 +46,7 @@ const transporter = nodemailer.createTransport({
     pass: process.env.OUTLOOK_PASS,
   },
   tls: {
-    ciphers: 'SSLv3',
+    rejectUnauthorized: false,
   },
 });
 
@@ -60,85 +60,85 @@ app.post("/submit", upload.single("passport"), (req, res) => {
     from: process.env.OUTLOOK_USER,
     to: email,
     subject: "Nouvelle Inscription Reçue",
+    text: `Détails de l'inscription:\n\nNom de l'élève: ${lastName}\nPrénom de l'élève: ${firstName}\nEmail: ${email}\nDate de naissance: ${dob}\nNiveau scolaire: ${schoolLevel}\nMatières à étudier: ${subjects}\nProgramme choisi: ${program}\nNuméro de téléphone du parent 1: ${parent1Phone}\nNuméro de téléphone du parent 2: ${parent2Phone}`,
     html: `<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .header {
-            background-color: #24345a;
-            color: #ffffff;
-            padding: 10px;
-            text-align: center;
-            border-radius: 5px 5px 0 0;
-        }
-        .content {
-            padding: 20px;
-        }
-        .content h2 {
-            color: #24345a;
-            margin-top: 0;
-        }
-        .content p {
-            margin: 0;
-            padding: 10px 0;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        .content p strong {
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-        .footer {
-            text-align: center;
-            padding: 10px;
-            font-size: 0.8em;
-            color: #666666;
-            border-top: 1px solid #ddd;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Nouvelle Inscription Reçue</h1>
-        </div>
-        <div class="content">
-            <h2>Détails de l'inscription</h2>
-            <p><strong>Nom de l'élève :</strong> ${lastName}</p>
-            <p><strong>Prénom de l'élève :</strong> ${firstName}</p>
-            <p><strong>Email :</strong> ${email}</p>
-            <p><strong>Date de naissance :</strong> ${dob}</p>
-            <p><strong>Niveau scolaire :</strong> ${schoolLevel}</p>
-            <p><strong>Matières à étudier :</strong> ${subjects}</p>
-            <p><strong>Programme choisi :</strong> ${program}</p>
-            <p><strong>Numéro de téléphone du parent 1 :</strong> ${parent1Phone}</p>
-            <p><strong>Numéro de téléphone du parent 2 :</strong> ${parent2Phone}</p>
-        </div>
-        <div class="footer">
-            <p>Cross Knowledge</p>
-        </div>
-    </div>
-</body>
-</html>
-    `,
+  <html lang="fr">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              color: #333;
+              margin: 0;
+              padding: 0;
+          }
+          .container {
+              width: 100%;
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+              background-color: #f9f9f9;
+              border: 1px solid #ddd;
+              border-radius: 5px;
+          }
+          .header {
+              background-color: #24345a;
+              color: #ffffff;
+              padding: 10px;
+              text-align: center;
+              border-radius: 5px 5px 0 0;
+          }
+          .content {
+              padding: 20px;
+          }
+          .content h2 {
+              color: #24345a;
+              margin-top: 0;
+          }
+          .content p {
+              margin: 0;
+              padding: 10px 0;
+              font-size: 1.2em;
+              font-weight: bold;
+          }
+          .content p strong {
+              font-weight: bold;
+              font-size: 1.2em;
+          }
+          .footer {
+              text-align: center;
+              padding: 10px;
+              font-size: 0.8em;
+              color: #666666;
+              border-top: 1px solid #ddd;
+              margin-top: 20px;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <div class="header">
+              <h1>Nouvelle Inscription Reçue</h1>
+          </div>
+          <div class="content">
+              <h2>Détails de l'inscription</h2>
+              <p><strong>Nom de l'élève :</strong> ${lastName}</p>
+              <p><strong>Prénom de l'élève :</strong> ${firstName}</p>
+              <p><strong>Email :</strong> ${email}</p>
+              <p><strong>Date de naissance :</strong> ${dob}</p>
+              <p><strong>Niveau scolaire :</strong> ${schoolLevel}</p>
+              <p><strong>Matières à étudier :</strong> ${subjects}</p>
+              <p><strong>Programme choisi :</strong> ${program}</p>
+              <p><strong>Numéro de téléphone du parent 1 :</strong> ${parent1Phone}</p>
+              <p><strong>Numéro de téléphone du parent 2 :</strong> ${parent2Phone}</p>
+          </div>
+          <div class="footer">
+              <p>Cross Knowledge</p>
+          </div>
+      </div>
+  </body>
+  </html>`,
     attachments: passportFile
       ? [
           {
@@ -147,6 +147,11 @@ app.post("/submit", upload.single("passport"), (req, res) => {
           },
         ]
       : [],
+      headers: {
+        'X-Priority': '1', 
+        'X-MSMail-Priority': 'High',
+        'Importance': 'High',
+      },
   };
 
   // Send email
