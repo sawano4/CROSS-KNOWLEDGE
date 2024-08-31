@@ -38,10 +38,15 @@ app.use(express.urlencoded({ extended: true }));
 
 // Nodemailer transporter configuration
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: 'smtp.office365.com', // SMTP server
+  port: 587, // TLS port
+  secure: false, // Use TLS
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: process.env.OUTLOOK_USER, 
+    pass: process.env.OUTLOOK_PASS,
+  },
+  tls: {
+    ciphers: 'SSLv3',
   },
 });
 
