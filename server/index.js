@@ -58,7 +58,7 @@ app.post("/submit", upload.single("passport"), (req, res) => {
   // Email content
   const mailOptions = {
     from: process.env.OUTLOOK_USER,
-    to: "crossknowledge_school@gmail.com",
+    to: email,
     subject: "Nouvelle Inscription Reçue",
     html: `<!DOCTYPE html>
 <html lang="fr">
