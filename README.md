@@ -68,22 +68,24 @@ cd <repository-folder>
 
 ### Install dependencies 
 
-#Client
+# Client
 cd client
 npm install
 
-#Server
+# Server
 cd server
 npm install
 
 ### Run developement Servers
-#Client
+# Client
+
 npm run dev
 
 #Server
+
 npm run dev
 
-###Scripts
+### Scripts
 Client
 npm run dev: Start the development server.
 npm run build: Build the project for production.
@@ -103,7 +105,7 @@ OUTLOOK_USER=<your-outlook-email>
 OUTLOOK_PASS=<your-outlook-password>
 PORT=5000
 
-###Deployment
+### Deployment
 Netlify
 The client-side application is configured for deployment on Netlify. The netlify.toml file specifies the functions directory for serverless functions.
 
