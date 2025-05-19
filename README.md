@@ -86,7 +86,9 @@ npm run dev
 npm run dev
 
 ### Scripts
+
 Client
+
 npm run dev: Start the development server.
 npm run build: Build the project for production.
 npm run preview: Preview the production build.
