@@ -64,7 +64,7 @@ Cross~Knowledge is a web platform designed to provide personalized educational s
 ### Clone the Repository
 
 git clone [<repository-url>](https://github.com/sawano4/CROSS-KNOWLEDGE.git)
-cd <repository-folder>
+cd CROSS-KNOWLEDGE
 
 ### Install dependencies 
 
